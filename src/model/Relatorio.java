@@ -50,9 +50,6 @@ public class Relatorio {
 
 package model;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -90,32 +87,32 @@ public class Relatorio {
 
     // Método para exportar para Excel
     public void exportarParaExcel(String caminhoArquivo) {
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Relatório");
-
-        // Criar cabeçalho
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Tipo do Relatório");
-        headerRow.createCell(1).setCellValue("Data de Geração");
-        headerRow.createCell(2).setCellValue("Conteúdo");
-
-        // Preencher dados
-        Row dataRow = sheet.createRow(1);
-        dataRow.createCell(0).setCellValue(tipo_relatorio);
-        dataRow.createCell(1).setCellValue(dataGeracao.toString());
-        dataRow.createCell(2).setCellValue(dados);
-
-        // Salvar arquivo
-        try (FileOutputStream fileOut = new FileOutputStream(caminhoArquivo)) {
-            workbook.write(fileOut);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                workbook.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        Workbook workbook = new XSSFWorkbook();
+//        Sheet sheet = workbook.createSheet("Relatório");
+//
+//        // Criar cabeçalho
+//        Row headerRow = sheet.createRow(0);
+//        headerRow.createCell(0).setCellValue("Tipo do Relatório");
+//        headerRow.createCell(1).setCellValue("Data de Geração");
+//        headerRow.createCell(2).setCellValue("Conteúdo");
+//
+//        // Preencher dados
+//        Row dataRow = sheet.createRow(1);
+//        dataRow.createCell(0).setCellValue(tipo_relatorio);
+//        dataRow.createCell(1).setCellValue(dataGeracao.toString());
+//        dataRow.createCell(2).setCellValue(dados);
+//
+//        // Salvar arquivo
+//        try (FileOutputStream fileOut = new FileOutputStream(caminhoArquivo)) {
+//            workbook.write(fileOut);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            try {
+//                workbook.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 }

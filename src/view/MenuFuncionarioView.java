@@ -20,8 +20,9 @@ import dao.ConnectionFactory;
 public class MenuFuncionarioView {
     public static void main(String[] args) {
 	JFrame Tela = new JFrame("Banco Malvader");
-	Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	Tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	Tela.setSize(400, 300);
+    Tela.setLocationRelativeTo(null);
 
 	Tela.setLayout(new BorderLayout());
 
@@ -62,7 +63,7 @@ public class MenuFuncionarioView {
 
 	    JFrame frameEntrada = new JFrame("Consultar dados");
 	    frameEntrada.setSize(300, 150);
-	    frameEntrada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    frameEntrada.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    frameEntrada.setLayout(null);
 
 	    JLabel labelEntrada = new JLabel("Digite o número da conta do cliente a ser consultado:");
@@ -106,7 +107,7 @@ public class MenuFuncionarioView {
 		    }
 		} catch (SQLException sqle) {
 		    sqle.printStackTrace();
-		    System.exit(0);
+		    //System.exit(0);
 		}
 	    });
 
@@ -130,14 +131,24 @@ public class MenuFuncionarioView {
 	CadastrarFuncionario.setFont(new Font("Arial", Font.PLAIN, 16));
 
 	CadastrarFuncionario.addActionListener(e -> {
-	    Tela.dispose();
-	    CadastroFuncionarioView.main(new String[] {});
+		String input = JOptionPane.showInputDialog(Tela, "Digite a senha do"
+                + "administrador continuar.", "Confirmar permissão.", JOptionPane.INFORMATION_MESSAGE);
+		if (input.equals("123")) {
+			Tela.dispose();
+		    CadastroFuncionarioView.main(new String[] {});
+		} else {
+            JOptionPane.showMessageDialog(Tela, "Senha incorreta!", "Tente novamente.", JOptionPane.ERROR_MESSAGE);
+		}
 	});
 
 	PainelCentral.add(CadastrarFuncionario);
 
 	JButton Sair = new JButton("Sair");
 	Sair.setFont(new Font("Arial", Font.PLAIN, 16));
+	
+	Sair.addActionListener(e -> {
+		System.exit(0);
+	});
 
 	PainelCentral.add(Sair);
 

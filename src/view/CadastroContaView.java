@@ -60,6 +60,7 @@ public class CadastroContaView {
         JFrame Tela = new JFrame("Banco Malvader");
         Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Tela.setSize(400, 300);
+        Tela.setLocationRelativeTo(null);
         Tela.setLayout(new BorderLayout());
 
         JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
@@ -85,6 +86,15 @@ public class CadastroContaView {
         PainelConta.add(ContaCorrente);
         PainelConta.add(Escolher);
         Tela.add(PainelConta, BorderLayout.CENTER);
+        
+        JButton Voltar = new JButton("Voltar");
+        Voltar.setFont(new Font("Arial", Font.BOLD, 16));
+        PainelConta.add(Voltar);
+        
+        Voltar.addActionListener(env -> {            
+        	MenuFuncionarioView.main(new String[] {});
+    	    Tela.dispose();
+        });
 
         // Adiciona ActionListener ao botão "Escolher"
         Escolher.addActionListener(new ActionListener() {

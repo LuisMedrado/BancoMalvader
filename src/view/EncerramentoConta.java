@@ -11,6 +11,7 @@ public class EncerramentoConta {
         JFrame Tela = new JFrame("Banco Malvader");
         Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         Tela.setSize(400, 200); 
+        Tela.setLocationRelativeTo(null);
         Tela.setLayout(new BorderLayout()); 
 
         JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
@@ -35,19 +36,26 @@ public class EncerramentoConta {
         Enviar.setFont(new Font("Arial", Font.BOLD, 16));
         PainelBotao.add(Enviar);
         
-        Tela.add(PainelBotao, BorderLayout.SOUTH);
+        JButton Voltar = new JButton("Voltar");
+        Voltar.setFont(new Font("Arial", Font.BOLD, 16));
+        PainelBotao.add(Voltar);
         
+        Tela.add(PainelBotao, BorderLayout.SOUTH);     
         
-        Enviar.addActionListener(env -> {
-            Tela.dispose();
-            
+        Enviar.addActionListener(env -> {            
             String senha = String.valueOf(Senha.getPassword());
-            
-            if(senha.equals("tantoFaz123")) {
+            	
+            if(senha.equals("123")) {
             	Funcionario.encerrarConta(Integer.parseInt(Numero.getText()));
+            } else {
+            	JOptionPane.showMessageDialog(Tela, "Tente novamente.", "Senha incorreta!", JOptionPane.ERROR_MESSAGE);
             }
         });
-
+        
+        Voltar.addActionListener(env -> {            
+		    MenuFuncionarioView.main(new String[] {});
+		    Tela.dispose();
+        });
        
         Tela.add(new JScrollPane(Principal), BorderLayout.CENTER);
         Tela.setVisible(true);

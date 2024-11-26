@@ -24,6 +24,7 @@ public class LoginView {
 	JFrame Tela = new JFrame("Banco_Malvader");
 	Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	Tela.setSize(400, 300);
+    Tela.setLocationRelativeTo(null);
 	Tela.setLayout(new BorderLayout());
 
 	// Título
@@ -73,7 +74,8 @@ public class LoginView {
 
 		// Redireciona conforme o tipo de usuário
 		if (tipoUsuario.equals("Cliente")) {
-		    MenuClienteView.main(new String[] {});
+//			Cliente cliente = new Cliente();
+//		    MenuClienteView.
 		} else {
 		    MenuFuncionarioView.main(new String[] {});
 		}

@@ -1,127 +1,124 @@
 package view;
 
-import java.awt.*;
-import javax.swing.*;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class MenuClienteView {
-/*public static void main(String[] args) {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.CardLayout;
 
-        JFrame Tela = new JFrame("Banco Malvader");
-        Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-        Tela.setSize(400, 300); 
-        Tela.setLayout(new BorderLayout());
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
+import javax.swing.border.EtchedBorder;
 
-        JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
-        Titulo.setFont(new Font("Arial", Font.BOLD, 15));
-        Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        
-        Tela.add(Titulo, BorderLayout.NORTH);
+import model.Cliente;
 
-        JPanel PainelCentral = new JPanel();
-        PainelCentral.setLayout(new GridLayout(6, 1, 10, 10));
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-        Tela.add(PainelCentral, BorderLayout.CENTER);
+import java.awt.Font;
+import javax.swing.JToggleButton;
 
-        JButton OperacoesConta = new JButton("Oparacao de Conta");
-        OperacoesConta.setFont(new Font("Arial", Font.PLAIN, 16));
+public class MenuClienteView extends JFrame {
 
-        PainelCentral.add(OperacoesConta); 
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private final Cliente cliente_logado; 
 
-        JButton Sair = new JButton("Sair");
-        Sair.setFont(new Font("Arial", Font.PLAIN, 16));
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					MenuClienteView frame = new MenuClienteView();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
-        PainelCentral.add(Sair); 
-        
-        Tela.setVisible(true);
-     }
-*/
-
-	    private JFrame frame;
-
-	    /**
-	     * Launch the application.
-	     */
-	    public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-		    public void run() {
-			try {
-			    MenuClienteView window = new MenuClienteView();
-			    window.frame.setVisible(true);
-			} catch (Exception e) {
-			    e.printStackTrace();
-			}
-		    }
+	public MenuClienteView(Cliente cliente) {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+        setSize(500, 400); 
+        setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.cliente_logado = cliente;
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBounds(110, 69, 217, 260);
+		contentPane.add(panel);
+		panel.setLayout(null);
+		
+		JButton Deposito = new JButton("Depósito");
+		Deposito.setBounds(30, 123, 144, 21);
+		panel.add(Deposito);
+		
+		JButton Saque = new JButton("Saque");
+		Saque.setBounds(30, 92, 144, 21);
+		panel.add(Saque);
+		
+		JButton Extrato = new JButton("Extrato");
+		Extrato.setBounds(30, 185, 144, 21);
+		panel.add(Extrato);
+		
+		JButton Limite = new JButton("Consultar Limite");
+		Limite.setBounds(30, 154, 144, 21);
+		panel.add(Limite);
+		
+		JButton Sair = new JButton("Sair");
+		Sair.setBounds(72, 216, 76, 21);
+		panel.add(Sair);
+		
+		JToggleButton Saldo = new JToggleButton("---");
+		Saldo.setBounds(60, 21, 88, 45);
+		panel.add(Saldo);
+		
+		JLabel lblNewLabel = new JLabel("Opções");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setBounds(191, 34, 46, 25);
+		contentPane.add(lblNewLabel);
+		
+		Saldo.addActionListener(e -> {
+			AbstractButton saldo = (AbstractButton)e.getSource();
+	        boolean a = saldo.getModel().isSelected();
+	        if (a) {
+	            String senha = JOptionPane.showInputDialog(this, "Digite a senha de"
+	                + "usuário para vizializar o saldo.", "Confirmar usuário.", JOptionPane.INFORMATION_MESSAGE);
+	                
+	            if (senha.equals("123")) {  	//vai ser a senha do usuario
+	                saldo.setText("arrumar"); 	//vai mostrar o saldo do usuario logado
+	            } else {
+	                JOptionPane.showMessageDialog(this, "Senha incorreta!", "Tente novamente.", JOptionPane.ERROR_MESSAGE);
+	            }
+	        } else {
+	            saldo.setText("---");
+	        }
 		});
-	    }
-
-	    /**
-	     * Create the application.
-	     */
-	    public MenuClienteView() {
-		initialize();
-	    }
-
-	    /**
-	     * Initialize the contents of the frame.
-	     */
-	    private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 316, 333);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-
-		JButton botaoRetornar = new JButton("Retornar ao menu");
-		botaoRetornar.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
+		
+		Saque.addActionListener(e -> {
+			SaqueView.main(null);
 		});
-		botaoRetornar.setBounds(79, 154, 140, 23);
-		frame.getContentPane().add(botaoRetornar);
-
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-
-		JMenu mnNewMenu = new JMenu("Operações de conta");
-		menuBar.add(mnNewMenu);
-
-		JMenuItem menuSaldo = new JMenuItem("Saldo");
-		menuSaldo.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
+		
+		Deposito.addActionListener(e -> {
+			
 		});
-		mnNewMenu.add(menuSaldo);
-
-		JMenuItem menuSaque = new JMenuItem("Saque");
-		menuSaque.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
+		
+		Limite.addActionListener(e -> {
+			
 		});
-		mnNewMenu.add(menuSaque);
-
-		JMenuItem menuDeposito = new JMenuItem("Depósito");
-		menuDeposito.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
+		
+		Extrato.addActionListener(e -> {
+			
 		});
-		mnNewMenu.add(menuDeposito);
-
-		JMenuItem menuExtrato = new JMenuItem("Extrato");
-		menuExtrato.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
+		
+		Sair.addActionListener(e -> {
+			
 		});
-		mnNewMenu.add(menuExtrato);
-
-		JMenuItem menuLimite = new JMenuItem("Consultar limite");
-		menuLimite.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    }
-		});
-		mnNewMenu.add(menuLimite);
-	    }
+	}
 }
-	
-	

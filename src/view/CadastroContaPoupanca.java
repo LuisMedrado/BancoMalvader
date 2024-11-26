@@ -25,6 +25,7 @@ public class CadastroContaPoupanca {
 	JFrame Tela = new JFrame("Banco Malvader");
 	Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	Tela.setSize(600, 600);
+    Tela.setLocationRelativeTo(null);
 	Tela.setLayout(new BorderLayout());
 
 	JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
@@ -77,6 +78,15 @@ public class CadastroContaPoupanca {
 	JButton Enviar = new JButton("Enviar");
 	Enviar.setFont(new Font("Arial", Font.BOLD, 16));
 	PainelBotao.add(Enviar);
+	
+	JButton Voltar = new JButton("Voltar");
+    Voltar.setFont(new Font("Arial", Font.BOLD, 16));
+    PainelBotao.add(Voltar);
+    
+    Voltar.addActionListener(env -> {            
+	    CadastroContaView.main(new String[] {});
+	    Tela.dispose();
+    });
 
 	Enviar.addActionListener(env -> {
 	    Tela.dispose();

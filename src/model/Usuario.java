@@ -86,7 +86,7 @@ public abstract class Usuario {
 
     // Métodos
     public boolean login(String senha) {
-
+    	return false;
     }
 
     public static boolean validarLogin(String cpf, String senha, String tipoUsuario) {
@@ -108,7 +108,7 @@ public abstract class Usuario {
     }
 
     public String logout() {
-
+    	return "";
     }
 
     public String consultarDados() {

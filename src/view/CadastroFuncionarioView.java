@@ -16,6 +16,7 @@ public class CadastroFuncionarioView {
 	    JFrame Tela = new JFrame("Banco Malvader");
 	    Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 	    Tela.setSize(400, 300); 
+	    Tela.setLocationRelativeTo(null);
 	    Tela.setLayout(new BorderLayout());
 
 	    JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
@@ -71,6 +72,15 @@ public class CadastroFuncionarioView {
 
 	    Tela.add(Principal, BorderLayout.CENTER);
 	    
+	    JButton Voltar = new JButton("Voltar");
+        Voltar.setFont(new Font("Arial", Font.BOLD, 16));
+        PainelBotao.add(Voltar);
+        
+        Voltar.addActionListener(env -> {            
+		    MenuFuncionarioView.main(new String[] {});
+		    Tela.dispose();
+        });
+	    
 	    Enviar.addActionListener(env -> {
             Tela.dispose();
             
@@ -91,6 +101,6 @@ public class CadastroFuncionarioView {
 
 	    Tela.setVisible(true);
 	    
-	    }
+    }
 
 }

@@ -61,10 +61,10 @@ public abstract class Conta {
 	}
 	
 	public boolean sacar(double valor_conta) {
-		
+		return false;
 	}
 	
 	public double consultarSaldo() {
-		
+		return 0;
 	}
 }

@@ -1,6 +1,11 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
+
+import dao.ConnectionFactory;
 
 public class Cliente extends Usuario {
     
@@ -89,7 +94,7 @@ public class Cliente extends Usuario {
 	}
 	
 	public String consultarExtrato() {
-		
+		return "";
 	}
 	
 	public double consultarLimite(ContaCorrente cc) {

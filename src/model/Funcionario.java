@@ -168,22 +168,22 @@ public class Funcionario extends Usuario {
 		    int idUsuario;
 		    try (PreparedStatement stmtUsuario = conn.prepareStatement(sqlUsuario,
 			    Statement.RETURN_GENERATED_KEYS)) {
-			stmtUsuario.setString(1, cl.getNome_usuario());
-			stmtUsuario.setString(2, cl.getCpf_usuario());
-			stmtUsuario.setString(3, String.valueOf(cl.getDataNascimento_usuario())); // Formatar
-												  // corretamente
-			stmtUsuario.setString(4, cl.getTelefone_usuario());
-			stmtUsuario.setString(5, cl.getSenha());
-
-			stmtUsuario.executeUpdate();
-
-			try (ResultSet rs = stmtUsuario.getGeneratedKeys()) {
-			    if (rs.next()) {
-				idUsuario = rs.getInt(1); // ID gerado para usuario
-			    } else {
-				throw new SQLException("Falha ao obter o ID gerado para o usuário.");
-			    }
-			}
+				stmtUsuario.setString(1, cl.getNome_usuario());
+				stmtUsuario.setString(2, cl.getCpf_usuario());
+				stmtUsuario.setString(3, String.valueOf(cl.getDataNascimento_usuario())); // Formatar
+													  // corretamente
+				stmtUsuario.setString(4, cl.getTelefone_usuario());
+				stmtUsuario.setString(5, cl.getSenha());
+	
+				stmtUsuario.executeUpdate();
+	
+				try (ResultSet rs = stmtUsuario.getGeneratedKeys()) {
+				    if (rs.next()) {
+				    	idUsuario = rs.getInt(1); // ID gerado para usuario
+				    } else {
+				    	throw new SQLException("Falha ao obter o ID gerado para o usuário.");
+				    }
+				}
 		    }
 
 		    // Inserindo na tabela cliente
@@ -244,8 +244,7 @@ public class Funcionario extends Usuario {
     }
 
     public static void encerrarConta(int numeroConta) {
-	String sqlSelectConta = "SELECT id_conta FROM conta WHERE numero_conta = ?;";
-	String sqlDeleteContaCorrente = "DELETE FROM conta_corrente WHERE id_conta = ?;";
+	String sqlSelectConta = "SELECT * FROM conta WHERE numero_conta = ?;";
 	String sqlDeleteConta = "DELETE FROM conta WHERE numero_conta = ?;";
 
 	try (Connection conn = ConnectionFactory.conectar()) {
@@ -257,12 +256,34 @@ public class Funcionario extends Usuario {
 		try (ResultSet rs = stmtSelect.executeQuery()) {
 		    if (rs.next()) {
 			int idConta = rs.getInt("id_conta");
+			String tipo = rs.getString("tipo_conta");
+			
+			if (tipo.equals("CORRENTE")) {
+				String sqlDeleteContaCorrente = "DELETE FROM conta_corrente WHERE id_conta = ?;";
 
-			// Excluir da tabela conta_corrente, se necessário
-			try (PreparedStatement stmtDeleteCorrente = conn.prepareStatement(sqlDeleteContaCorrente)) {
-			    stmtDeleteCorrente.setInt(1, idConta);
-			    stmtDeleteCorrente.executeUpdate();
-			}
+				try (PreparedStatement stmtDeleteCorrente = conn.prepareStatement(sqlDeleteContaCorrente)) {
+				    stmtDeleteCorrente.setInt(1, idConta);
+				    int rows = stmtDeleteCorrente.executeUpdate();
+				    
+				    if (rows < 0) {
+				    	conn.rollback();
+						JOptionPane.showMessageDialog(null, "Erro ao encerrar conta tipo corente: ");
+				    }
+				}
+				
+			} else if (tipo.equals("POUPANCA")) {
+				String sqlDeleteContaPoupanca = "DELETE FROM conta_poupanca WHERE id_conta = ?;";
+
+				try (PreparedStatement stmtDeleteCorrente = conn.prepareStatement(sqlDeleteContaPoupanca)) {
+				    stmtDeleteCorrente.setInt(1, idConta);
+				    int rows = stmtDeleteCorrente.executeUpdate();
+				    
+				    if (rows < 0) {
+				    	conn.rollback();
+						JOptionPane.showMessageDialog(null, "Erro ao encerrar conta tipo corente: ");
+				    }
+				}
+			}	
 
 			// Excluir da tabela conta
 			try (PreparedStatement stmtDeleteConta = conn.prepareStatement(sqlDeleteConta)) {
