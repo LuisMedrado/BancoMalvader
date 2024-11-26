@@ -137,7 +137,6 @@ public class CadastroContaPoupanca {
 	    Endereco end = new Endereco(); // aqui é onde vai setar o endereco quando tiver (por enquanto tá nulo)
 	    
 	    // SETTERS DO ENDERECO ABAIXO
-	    
         end.setCep(Cep.getText());
         end.setLocal(Local.getText());
         end.setNumeroCasa(Integer.parseInt(NumCasa.getText()));
