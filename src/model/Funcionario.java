@@ -57,7 +57,7 @@ public class Funcionario extends Usuario {
     }
 
     // Métodos
-    public static void abrirConta(Conta conta) {
+    public static void abrirConta(Conta conta, Endereco end) {
 	if (conta instanceof ContaCorrente) {
 	    ContaCorrente cc = (ContaCorrente) conta;
 	    Cliente cl = cc.getCliente();
@@ -67,6 +67,7 @@ public class Funcionario extends Usuario {
 	    String sqlCliente = "INSERT INTO cliente (id_usuario) VALUES (?)";
 	    String sqlConta = "INSERT INTO conta (numero_conta, agencia, tipo_conta, id_cliente) VALUES (?, ?, 'CORRENTE', ?)";
 	    String sqlCC = "INSERT INTO conta_corrente (limite, data_vencimento, id_conta) VALUES (?, ?, ?)";
+	    String sqlEndereco = "INSERT INTO banco_malvader.endereco (cep, local, numero_casa, bairro, cidade, estado, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 	    try (Connection conn = ConnectionFactory.conectar()) {
 		conn.setAutoCommit(false); // Início da transação
@@ -135,6 +136,18 @@ public class Funcionario extends Usuario {
 			stmtCC.setInt(3, idConta);
 			stmtCC.executeUpdate();
 		    }
+		    
+		    // Receba endereçamento
+		    try (PreparedStatement stmtEndereco = conn.prepareStatement(sqlEndereco)) {
+		    	stmtEndereco.setString(1, end.getCep());
+		    	stmtEndereco.setString(2, end.getLocal());
+		    	stmtEndereco.setInt(3, end.getNumeroCasa());
+		    	stmtEndereco.setString(4, end.getBairro());
+		    	stmtEndereco.setString(5, end.getCidade());
+		    	stmtEndereco.setString(6, end.getEstado());
+		    	stmtEndereco.setInt(7, idUsuario);
+		    	stmtEndereco.executeUpdate();
+		    }
 
 		    // Confirmando a transação
 		    conn.commit();
@@ -159,6 +172,7 @@ public class Funcionario extends Usuario {
 	    String sqlCliente = "INSERT INTO cliente (id_usuario) VALUES (?)";
 	    String sqlConta = "INSERT INTO conta (numero_conta, agencia, tipo_conta, id_cliente) VALUES (?, ?, 'POUPANCA', ?)";
 	    String sqlCP = "INSERT INTO conta_poupanca (taxa_rendimento, id_conta) VALUES (?, ?)";
+	    String sqlEndereco = "INSERT INTO banco_malvader.endereco (cep, local, numero_casa, bairro, cidade, estado, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 	    try (Connection conn = ConnectionFactory.conectar()) {
 		conn.setAutoCommit(false); // Início da transação
@@ -226,6 +240,18 @@ public class Funcionario extends Usuario {
 			stmtCP.setInt(2, idConta); // Definir o ID da conta
 			stmtCP.executeUpdate();
 		    }
+		    
+		    try (PreparedStatement stmtEndereco = conn.prepareStatement(sqlEndereco)) {
+		    	stmtEndereco.setString(1, end.getCep());
+		    	stmtEndereco.setString(2, end.getLocal());
+		    	stmtEndereco.setInt(3, end.getNumeroCasa());
+		    	stmtEndereco.setString(4, end.getBairro());
+		    	stmtEndereco.setString(5, end.getCidade());
+		    	stmtEndereco.setString(6, end.getEstado());
+		    	stmtEndereco.setInt(7, idUsuario);
+		    	stmtEndereco.executeUpdate();
+		    }
+		    
 
 		    // Confirmando a transação
 		    conn.commit();

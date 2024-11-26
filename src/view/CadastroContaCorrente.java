@@ -26,8 +26,12 @@ public class CadastroContaCorrente {
         Tela.add(Titulo, BorderLayout.NORTH);
 
         JPanel Principal = new JPanel();
-        Principal.setLayout(new GridLayout(12, 2, 10, 5));
+        Principal.setLayout(new GridLayout(16, 2, 10, 5));
+        
+        JScrollPane scroll = new JScrollPane(Principal);
        
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         Principal.add(new JLabel("ID:"));
         JTextField IdCliente = new JTextField(20);
@@ -69,6 +73,30 @@ public class CadastroContaCorrente {
         Principal.add(new JLabel("Data de vencimento: "));
         JTextField DataVencimento = new JTextField(20);
         Principal.add(DataVencimento);
+        
+        Principal.add(new JLabel("CEP: "));
+        JTextField Cep = new JTextField(20);
+        Principal.add(Cep);
+        
+        Principal.add(new JLabel("Local: "));
+        JTextField Local = new JTextField(20);
+        Principal.add(Local);
+        
+        Principal.add(new JLabel("Número da casa: "));
+        JTextField NumCasa = new JTextField(20);
+        Principal.add(NumCasa);
+        
+        Principal.add(new JLabel("Bairro: "));
+        JTextField Bairro = new JTextField(20);
+        Principal.add(Bairro);
+        
+        Principal.add(new JLabel("Cidade: "));
+        JTextField Cidade = new JTextField(20);
+        Principal.add(Cidade);
+        
+        Principal.add(new JLabel("Estado: "));
+        JTextField Estado = new JTextField(20);
+        Principal.add(Estado);
 
         JPanel PainelBotao = new JPanel();
         JButton Enviar = new JButton("Enviar");
@@ -94,12 +122,23 @@ public class CadastroContaCorrente {
             String telefone = Telefone.getText();
             char[] senha = Senha.getPassword();
             String senhaString = new String(senha);
-            Endereco end = new Endereco(); // aqui é onde vai setar o endereco quando tiver (por enquanto ta nulo)
+            Endereco end = new Endereco();
+            
+            // SETTERS DO ENDEREÇO ABAIXO
+            
+            end.setCep(Cep.getText());
+            end.setLocal(Local.getText());
+            end.setNumeroCasa(Integer.parseInt(NumCasa.getText()));
+            end.setBairro(Bairro.getText());
+            end.setCidade(Cidade.getText());
+            end.setEstado(Estado.getText());
+            
+            //
 
             Cliente c = new Cliente(idCliente, nome, cpf, dataNasc, telefone, end, senhaString);
             cc.setCliente(c);
 
-            Funcionario.abrirConta(cc);
+            Funcionario.abrirConta(cc, end);
         });
         
         
