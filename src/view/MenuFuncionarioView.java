@@ -1,158 +1,137 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
+import dao.ConnectionFactory;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import dao.ConnectionFactory;
+import javax.swing.*;
 
 public class MenuFuncionarioView {
     public static void main(String[] args) {
-	JFrame Tela = new JFrame("Banco Malvader");
-	Tela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	Tela.setSize(400, 300);
-    Tela.setLocationRelativeTo(null);
+        JFrame Tela = new JFrame("Banco Malvader - Menu Funcionário");
+        Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Tela.setSize(550, 350);
+        Tela.setLayout(new BorderLayout());
 
-	Tela.setLayout(new BorderLayout());
+        // Título estilizado
+        JLabel Titulo = new JLabel("Banco Malvader - Funcionários", SwingConstants.CENTER);
+        Titulo.setFont(new Font("Verdana", Font.BOLD, 22));
+        Titulo.setForeground(new Color(0, 102, 204));
+        Titulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+        Tela.add(Titulo, BorderLayout.NORTH);
 
-	JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
-	Titulo.setFont(new Font("Arial", Font.BOLD, 15));
-	Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        // Painel central com botões
+        JPanel PainelCentral = new JPanel();
+        PainelCentral.setLayout(new GridLayout(4, 2, 10, 10));
+        PainelCentral.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-	Tela.add(Titulo, BorderLayout.NORTH);
+        // Botões com funcionalidades existentes
+        JButton AberturaConta = criarBotao("Abertura de Conta");
+        AberturaConta.addActionListener(e -> {
+            Tela.dispose();
+            CadastroContaView.main(new String[]{});
+        });
+        PainelCentral.add(AberturaConta);
 
-	JButton AberturaConta = new JButton("Abertura de Conta");
-	AberturaConta.setFont(new Font("Arial", Font.PLAIN, 16));
+        JButton EncerramentoContaBT = criarBotao("Encerramento de Conta");
+        EncerramentoContaBT.addActionListener(e -> {
+            Tela.dispose();
+            EncerramentoConta.main(new String[]{});
+        });
+        PainelCentral.add(EncerramentoContaBT);
 
-	AberturaConta.addActionListener(e -> {
-	    Tela.dispose();
-	    CadastroContaView.main(new String[] {});
-	});
+        JButton ConsultaDados = criarBotao("Consulta de Dados");
+        ConsultaDados.addActionListener(e -> {
+            JFrame frameEntrada = new JFrame("Consultar dados");
+            frameEntrada.setSize(300, 150);
+            frameEntrada.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frameEntrada.setLayout(null);
 
-	JPanel PainelCentral = new JPanel();
+            JLabel labelEntrada = new JLabel("Digite o número da conta do cliente:");
+            labelEntrada.setBounds(20, 20, 250, 25);
+            frameEntrada.add(labelEntrada);
 
-	PainelCentral.add(AberturaConta);
+            JTextField textField = new JTextField();
+            textField.setBounds(20, 50, 250, 25);
+            frameEntrada.add(textField);
 
-	Tela.add(PainelCentral, BorderLayout.CENTER);
+            JButton button = criarBotao("Enviar");
+            button.setBounds(80, 90, 100, 25);
+            frameEntrada.add(button);
 
-	JButton EncerramentoContaBT = new JButton("Encerramento de Conta");
-	EncerramentoContaBT.setFont(new Font("Arial", Font.PLAIN, 16));
+            button.addActionListener(ent -> {
+                String inputText = textField.getText();
+                try {
+                    int inputInt = Integer.parseInt(inputText);
+                    String sql = "SELECT numero_conta, agencia, saldo, tipo_conta, id_cliente FROM conta WHERE numero_conta = ?;";
 
-	EncerramentoContaBT.addActionListener(e -> {
-	    Tela.dispose();
-	    EncerramentoConta.main(new String[] {});
-	});
+                    try (Connection conn = ConnectionFactory.conectar();
+                         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-	PainelCentral.add(EncerramentoContaBT);
+                        stmt.setInt(1, inputInt);
+                        var rs = stmt.executeQuery();
 
-	JButton ConsultaDados = new JButton("Consulta de Dados");
-	ConsultaDados.setFont(new Font("Arial", Font.PLAIN, 16));
+                        if (rs.next()) {
+                            int numero_conta = rs.getInt("numero_conta");
+                            String agencia_conta = rs.getString("agencia");
+                            double saldo_conta = rs.getDouble("saldo");
+                            String tipo_conta = rs.getString("tipo_conta");
+                            int id_usuario = rs.getInt("id_cliente");
 
-	ConsultaDados.addActionListener(ec -> {
+                            JOptionPane.showMessageDialog(frameEntrada,
+                                    "Número da conta: " + numero_conta + "\n" +
+                                            "Agência: " + agencia_conta + "\n" +
+                                            "Saldo: " + saldo_conta + "\n" +
+                                            "Tipo: " + tipo_conta + "\n" +
+                                            "ID do usuário: " + id_usuario);
+                        } else {
+                            JOptionPane.showMessageDialog(frameEntrada, "Conta não encontrada.");
+                        }
+                    } catch (SQLException sqle) {
+                        JOptionPane.showMessageDialog(frameEntrada, "Erro no banco de dados.");
+                        sqle.printStackTrace();
+                    }
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(frameEntrada, "Entrada inválida.");
+                }
+            });
 
-	    JFrame frameEntrada = new JFrame("Consultar dados");
-	    frameEntrada.setSize(300, 150);
-	    frameEntrada.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    frameEntrada.setLayout(null);
+            frameEntrada.setVisible(true);
+        });
+        PainelCentral.add(ConsultaDados);
 
-	    JLabel labelEntrada = new JLabel("Digite o número da conta do cliente a ser consultado:");
-	    labelEntrada.setBounds(20, 20, 100, 25);
-	    frameEntrada.add(labelEntrada);
+        JButton AlteracaoDados = criarBotao("Alteração de Dados");
+        PainelCentral.add(AlteracaoDados);
 
-	    JTextField textField = new JTextField();
-	    textField.setBounds(120, 20, 150, 25);
-	    frameEntrada.add(textField);
+        JButton GeracaoRelatorio = criarBotao("Geração de Relatório");
+        PainelCentral.add(GeracaoRelatorio);
 
-	    JButton button = new JButton("Enviar");
-	    button.setBounds(100, 60, 100, 25);
-	    frameEntrada.add(button);
+        JButton CadastrarFuncionario = criarBotao("Novo Funcionário");
+        CadastrarFuncionario.addActionListener(e -> {
+            Tela.dispose();
+            CadastroFuncionarioView.main(new String[]{});
+        });
+        PainelCentral.add(CadastrarFuncionario);
 
-	    button.addActionListener(ent -> {
-		String inputText = textField.getText();
-		int inputInt = Integer.parseInt(inputText);
+        JButton Sair = criarBotao("Sair");
+        Sair.addActionListener(e -> Tela.dispose());
+        PainelCentral.add(Sair);
 
-		String sql = "SELECT numero_conta, agencia, saldo, tipo_conta, id_cliente FROM conta WHERE numero_conta = ?;";
+        Tela.add(PainelCentral, BorderLayout.CENTER);
 
-		try (Connection conn = ConnectionFactory.conectar();
-			PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-		    stmt.setInt(1, inputInt);
-		    var rs = stmt.executeQuery();
-
-		    if (rs.next()) {
-
-			int numero_conta = rs.getInt("numero_conta");
-			String agencia_conta = rs.getString("agencia");
-			double saldo_conta = rs.getDouble("saldo");
-			String tipo_conta = rs.getString("tipo_conta");
-			int id_usuario = rs.getInt("id_cliente");
-
-			JOptionPane.showMessageDialog(frameEntrada,
-				"número da conta: " + numero_conta + ",\n" + "agência da conta: " + agencia_conta
-					+ ",\n" + "saldo da conta: " + saldo_conta + ",\n" + "tipo da conta: "
-					+ tipo_conta + ",\n" + "id do usuário: " + id_usuario + ".");
-		    } else {
-			System.out.println("Conta não encontrada.");
-		    }
-		} catch (SQLException sqle) {
-		    sqle.printStackTrace();
-		    //System.exit(0);
-		}
-	    });
-
-	    frameEntrada.setVisible(true);
-
-	});
-
-	PainelCentral.add(ConsultaDados);
-
-	JButton AlteracaoDados = new JButton("Alteracao de Dados");
-	AlteracaoDados.setFont(new Font("Arial", Font.PLAIN, 16));
-
-	PainelCentral.add(AlteracaoDados);
-
-	JButton GeracaoRelatorio = new JButton("Geracao de Relatorio");
-	GeracaoRelatorio.setFont(new Font("Arial", Font.PLAIN, 16));
-
-	PainelCentral.add(GeracaoRelatorio);
-
-	JButton CadastrarFuncionario = new JButton("Novo Funcionario");
-	CadastrarFuncionario.setFont(new Font("Arial", Font.PLAIN, 16));
-
-	CadastrarFuncionario.addActionListener(e -> {
-		String input = JOptionPane.showInputDialog(Tela, "Digite a senha do"
-                + "administrador continuar.", "Confirmar permissão.", JOptionPane.INFORMATION_MESSAGE);
-		if (input.equals("123")) {
-			Tela.dispose();
-		    CadastroFuncionarioView.main(new String[] {});
-		} else {
-            JOptionPane.showMessageDialog(Tela, "Senha incorreta!", "Tente novamente.", JOptionPane.ERROR_MESSAGE);
-		}
-	});
-
-	PainelCentral.add(CadastrarFuncionario);
-
-	JButton Sair = new JButton("Sair");
-	Sair.setFont(new Font("Arial", Font.PLAIN, 16));
-	
-	Sair.addActionListener(e -> {
-		System.exit(0);
-	});
-
-	PainelCentral.add(Sair);
-
-	Tela.setVisible(true);
+        // Centralizar a tela
+        Tela.setLocationRelativeTo(null);
+        Tela.setVisible(true);
     }
 
+    // Método para criar botões estilizados
+    private static JButton criarBotao(String texto) {
+        JButton botao = new JButton(texto);
+        botao.setFont(new Font("Arial", Font.BOLD, 14));
+        botao.setBackground(new Color(0, 102, 204));
+        botao.setForeground(Color.WHITE);
+        botao.setFocusPainted(false);
+        return botao;
+    }
 }

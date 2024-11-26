@@ -1,12 +1,10 @@
 package view;
 
 import java.awt.*;
-import java.sql.*;
 import java.time.LocalDate;
 
 import javax.swing.*;
 
-import dao.ConnectionFactory;
 import model.Cliente;
 import model.ContaCorrente;
 import model.Endereco;
@@ -20,9 +18,10 @@ public class CadastroContaCorrente {
         Tela.setLocationRelativeTo(null);
         Tela.setLayout(new BorderLayout());
 
-        JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
+        JLabel Titulo = new JLabel("Cadastro de conta corrente", SwingConstants.CENTER);
         Titulo.setFont(new Font("Arial", Font.BOLD, 15));
-        Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+    	Titulo.setForeground(new Color(0, 102, 204));
+    	Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         
         Tela.add(Titulo, BorderLayout.NORTH);
 
@@ -102,10 +101,16 @@ public class CadastroContaCorrente {
         JPanel PainelBotao = new JPanel();
         JButton Enviar = new JButton("Enviar");
         Enviar.setFont(new Font("Arial", Font.BOLD, 16));
+    	Enviar.setBackground(new Color(0, 102, 204));
+    	Enviar.setForeground(Color.WHITE);
+    	Enviar.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         PainelBotao.add(Enviar);
         
         JButton Voltar = new JButton("Voltar");
         Voltar.setFont(new Font("Arial", Font.BOLD, 16));
+    	Voltar.setBackground(new Color(0, 102, 204));
+    	Voltar.setForeground(Color.WHITE);
+    	Voltar.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
         PainelBotao.add(Voltar);
         
         Voltar.addActionListener(env -> {            

@@ -90,21 +90,21 @@ public abstract class Usuario {
     }
 
     public static boolean validarLogin(String cpf, String senha, String tipoUsuario) {
-	// A consulta verifica se o CPF, senha e tipo de usuário correspondem
-	String sql = "SELECT id_usuario FROM usuario WHERE cpf = ? AND senha = ? AND tipo_usuario = ?";
-
-	try (Connection conn = ConnectionFactory.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-	    stmt.setString(1, cpf);
-	    stmt.setString(2, senha);
-	    stmt.setString(3, tipoUsuario);
-
-	    ResultSet rs = stmt.executeQuery();
-	    return rs.next(); // Retorna true se encontrar o usuário
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    return false;
-	}
+		// A consulta verifica se o CPF, senha e tipo de usuário correspondem
+		String sql = "SELECT id_usuario FROM usuario WHERE cpf = ? AND senha = ? AND tipo_usuario = ?";
+	
+		try (Connection conn = ConnectionFactory.conectar(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+	
+		    stmt.setString(1, cpf);
+		    stmt.setString(2, senha);
+		    stmt.setString(3, tipoUsuario);
+	
+		    ResultSet rs = stmt.executeQuery();
+		    return rs.next(); // Retorna true se encontrar o usuário
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    return false;
+		}
     }
 
     public String logout() {

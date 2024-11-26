@@ -1,100 +1,55 @@
-/*package view;
-
-import java.awt.*;
-import javax.swing.*;
-
-public class CadastroContaView {
-
-	public static void main(String[] args) {
-        JFrame Tela = new JFrame("Banco Malvader");
-      Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-      Tela.setSize(400, 300); 
-      Tela.setLayout(new BorderLayout());
-
-      JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
-      Titulo.setFont(new Font("Arial", Font.BOLD, 15));
-      Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-      
-      Tela.add(Titulo, BorderLayout.NORTH);
-
-      JPanel PainelConta = new JPanel();
-      PainelConta.setLayout(new FlowLayout()); 
-      PainelConta.setBorder(BorderFactory.createTitledBorder("Escolha o tipo de conta"));
-      
-      JRadioButton ContaPoupanca = new JRadioButton("Conta Poupanca (CP)");
-      JRadioButton ContaCorrente = new JRadioButton("Conta Corrente (CC)");
-      
-      JButton Escolher = new JButton("Escolher");
-      Escolher.setFont(new Font("Arial", Font.PLAIN, 16));
-
-      ButtonGroup GrupoContas = new ButtonGroup();
-      GrupoContas.add(ContaPoupanca);
-      GrupoContas.add(ContaCorrente);
-      
-      PainelConta.add(ContaPoupanca);
-      PainelConta.add(ContaCorrente);
-      PainelConta.add(Escolher);
-
-
-
-      Tela.add(PainelConta, BorderLayout.CENTER);
-
-
-      Tela.setVisible(true);   
-  }
-
-	
-}
-*/
-
 package view;
 
 import java.awt.*;
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class CadastroContaView {
 
     public static void main(String[] args) {
-        JFrame Tela = new JFrame("Banco Malvader");
+        JFrame Tela = new JFrame("Banco Malvader - Cadastro de Conta");
         Tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Tela.setSize(400, 300);
-        Tela.setLocationRelativeTo(null);
+        Tela.setSize(450, 350);
         Tela.setLayout(new BorderLayout());
 
-        JLabel Titulo = new JLabel("Banco Malvader", SwingConstants.CENTER);
-        Titulo.setFont(new Font("Arial", Font.BOLD, 15));
-        Titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        // Título estilizado
+        JLabel Titulo = new JLabel("Cadastro de Conta", SwingConstants.CENTER);
+        Titulo.setFont(new Font("Verdana", Font.BOLD, 22));
+        Titulo.setForeground(new Color(0, 102, 204));
+        Titulo.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         Tela.add(Titulo, BorderLayout.NORTH);
 
+        // Painel central para seleção de conta
         JPanel PainelConta = new JPanel();
-        PainelConta.setLayout(new FlowLayout());
-        PainelConta.setBorder(BorderFactory.createTitledBorder("Escolha o tipo de conta"));
+        PainelConta.setLayout(new GridLayout(3, 1, 10, 10));
+        PainelConta.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
+        // Botões de rádio estilizados
         JRadioButton ContaPoupanca = new JRadioButton("Conta Poupança (CP)");
-        JRadioButton ContaCorrente = new JRadioButton("Conta Corrente (CC)");
+        ContaPoupanca.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        JButton Escolher = new JButton("Escolher");
-        Escolher.setFont(new Font("Arial", Font.PLAIN, 16));
+        JRadioButton ContaCorrente = new JRadioButton("Conta Corrente (CC)");
+        ContaCorrente.setFont(new Font("Arial", Font.PLAIN, 14));
 
         ButtonGroup GrupoContas = new ButtonGroup();
         GrupoContas.add(ContaPoupanca);
         GrupoContas.add(ContaCorrente);
 
+        // Botão "Escolher" estilizado com padding reduzido
+        JButton Escolher = new JButton("Escolher");
+        Escolher.setFont(new Font("Arial", Font.BOLD, 18));
+        Escolher.setBackground(new Color(0, 102, 204));
+        Escolher.setForeground(Color.WHITE);
+        Escolher.setFocusPainted(false);
+        Escolher.setMargin(new Insets(5, 10, 5, 10)); // Padding ajustado
+
+        // Adiciona componentes ao painel
         PainelConta.add(ContaPoupanca);
         PainelConta.add(ContaCorrente);
         PainelConta.add(Escolher);
+
         Tela.add(PainelConta, BorderLayout.CENTER);
-        
-        JButton Voltar = new JButton("Voltar");
-        Voltar.setFont(new Font("Arial", Font.BOLD, 16));
-        PainelConta.add(Voltar);
-        
-        Voltar.addActionListener(env -> {            
-        	MenuFuncionarioView.main(new String[] {});
-    	    Tela.dispose();
-        });
 
         // Adiciona ActionListener ao botão "Escolher"
         Escolher.addActionListener(new ActionListener() {
@@ -104,7 +59,7 @@ public class CadastroContaView {
                     CadastroContaCorrente.main(new String[]{}); // Abre a classe CadastroContaCorrente
                     Tela.dispose(); // Fecha a tela atual
                 } else if (ContaPoupanca.isSelected()) {
-                    CadastroContaPoupanca.main(new String[]{}); // Abre a classe CadastroContaPoupanca
+                    CadastroContaPoupancaView.main(new String[]{}); // Abre a classe CadastroContaPoupanca
                     Tela.dispose(); // Fecha a tela atual
                 } else {
                     JOptionPane.showMessageDialog(Tela, "Selecione um tipo de conta!", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -112,6 +67,8 @@ public class CadastroContaView {
             }
         });
 
+        // Centralizar a tela
+        Tela.setLocationRelativeTo(null);
         Tela.setVisible(true);
     }
 }

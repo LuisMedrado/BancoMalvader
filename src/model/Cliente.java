@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.sql.*;
 
 import dao.ConnectionFactory;
+import dao.ContaDAO;
 
 public class Cliente extends Usuario {
     
@@ -53,45 +54,13 @@ public class Cliente extends Usuario {
 		       }
 	}
 
-	public void depositar(Conta conta, double valor) {
-		String sql = "UPDATE conta SET saldo = ? WHERE ?;";
-		
-		try (Connection conn = ConnectionFactory.conectar();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
-			
-			stmt.setDouble(1, (conta.consultarSaldo() + valor));
-			int rowsInserted = stmt.executeUpdate();
-	        
-	        if (rowsInserted > 0) {
-	            System.out.println("Depósito efetuado com sucesso!");
-	        }
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-		}
-}
+	public void depositar(Conta conta, double valor) throws SQLException {
+		ContaDAO.deposito(valor, conta.getNumero_conta());
+
+	}
 	
-	public boolean sacar(Conta conta, double valor) {
-		String sql = "UPDATE conta SET saldo = ? WHERE ?;";
-		
-		if (conta.getSaldo_conta() >= valor) {
-			try (Connection conn = ConnectionFactory.conectar();
-					PreparedStatement stmt = conn.prepareStatement(sql)) {
-				
-				stmt.setDouble(1, (conta.consultarSaldo() - valor));
-				int rowsInserted = stmt.executeUpdate();
-		        
-		        if (rowsInserted > 0) {
-		            System.out.println("Saque efetuado com sucesso!");
-		        }
-		        return true;
-			} catch (SQLException sqle) {
-				sqle.printStackTrace();
-				return false;
-			}
-		} else {
-			System.out.println("Saldo insuficiente para saque!");
-			return false;
-		}
+	public void sacar(Conta conta, double valor) throws SQLException {
+		ContaDAO.saque(valor, conta.getNumero_conta());
 	}
 	
 	public String consultarExtrato() {
@@ -102,23 +71,23 @@ public class Cliente extends Usuario {
 		String sql = "SELECT limite FROM conta_corrente WHERE id_conta = ?;";
 		
 		 try (Connection conn = ConnectionFactory.conectar();
-			      PreparedStatement stmt = conn.prepareStatement(sql)) {
-			           
-			           stmt.setInt(1, cc.getNumero_conta());
-			           var rs = stmt.executeQuery();
-			           
-			           if (rs.next()) {
-			        	   double limite = rs.getDouble("limite");
-			        	   cc.setLimite(limite);
-			        	   return limite;
-			           } else {
-			               System.out.println("Conta não encontrada.");
-			               return 0;
-			           }
-			       } catch (SQLException sqle) {
-			           sqle.printStackTrace();
-			           return 0;
-			       }
+	      PreparedStatement stmt = conn.prepareStatement(sql)) {
+	           
+           stmt.setInt(1, cc.getNumero_conta());
+           var rs = stmt.executeQuery();
+           
+           if (rs.next()) {
+        	   double limite = rs.getDouble("limite");
+        	   cc.setLimite(limite);
+        	   return limite;
+           } else {
+               System.out.println("Conta não encontrada.");
+               return 0;
+           }
+       } catch (SQLException sqle) {
+           sqle.printStackTrace();
+           return 0;
+       }
 	}
 }
 	
